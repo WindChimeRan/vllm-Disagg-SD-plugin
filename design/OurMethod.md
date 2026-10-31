@@ -1,5 +1,9 @@
 # Our method: overlap within one request
 
+A parallel drafter can learn to produce useful future continuations across
+unresolved prefix gaps, allowing drafting and verification to progress
+concurrently within one request.
+
 ![Proposed two-GPU system and a timeline of drafting ahead while verifying and correcting an earlier block.](figures/within-request-overlap.svg)
 
 **Keep both GPUs working on the same request.** While the verifier checks an
