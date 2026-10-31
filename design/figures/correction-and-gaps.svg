@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="660" viewBox="0 0 1280 660" role="img" aria-labelledby="title desc">
+  <title id="title">Suffix reuse and drafting across gaps</title>
+  <desc id="desc">In a greedy example, draft tokens d1 and d2 are accepted, d3 is replaced with correction c3, and d4 through d6 are kept as unverified candidates. The target recomputes state from corrected position 3 before checking the retained suffix. Separately, proposed gap training lets DFlash1 use available anchors through position 0 to predict positions 7 through 12 in parallel, while positions 1 through 6 are unresolved.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2864bd"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#aa5815"/></marker>
+    <style>
+      text { font-family: Arial, Helvetica, "DejaVu Sans", sans-serif; fill: #172a43; }
+      .title { font-size: 30px; font-weight: 700; }
+      .heading { font-size: 22px; font-weight: 700; }
+      .body { font-size: 18px; }
+      .small { font-size: 17px; }
+      .token { font-size: 23px; font-weight: 700; text-anchor: middle; }
+      .muted { fill: #53647a; }
+      .blue { fill: #2256a1; }
+      .green { fill: #146153; }
+      .amber { fill: #95460e; }
+      .candidate { fill: #deebff; stroke: #9abbe9; }
+      .accepted { fill: #dfefe8; stroke: #95c3b5; }
+    </style>
+  </defs>
+  <rect width="1280" height="660" fill="#ffffff"/>
+  <text x="36" y="49" class="title">Keep the suffix; draft across a gap</text>
+  <text x="36" y="80" class="body muted">Proposed mechanism · greedy example · illustrative positions</text>
+  <path d="M36 106H1244" stroke="#dce3ec"/>
+
+  <text x="36" y="141" class="heading">A. Correct position 3, then recheck the existing candidates</text>
+  <text x="36" y="179" class="small muted">Position</text>
+  <g class="small muted" text-anchor="middle">
+    <text x="296" y="179">1</text><text x="372" y="179">2</text>
+    <text x="448" y="179">3</text><text x="524" y="179">4</text>
+    <text x="600" y="179">5</text><text x="676" y="179">6</text>
+  </g>
+  <text x="36" y="225" class="body">Original draft</text>
+  <rect x="266" y="194" width="60" height="48" rx="6" class="candidate"/>
+  <rect x="342" y="194" width="60" height="48" rx="6" class="candidate"/>
+  <rect x="418" y="194" width="60" height="48" rx="6" fill="#fff0dc" stroke="#d9a56a"/>
+  <rect x="494" y="194" width="60" height="48" rx="6" class="candidate"/>
+  <rect x="570" y="194" width="60" height="48" rx="6" class="candidate"/>
+  <rect x="646" y="194" width="60" height="48" rx="6" class="candidate"/>
+  <g class="token blue">
+    <text x="296" y="226">d1</text><text x="372" y="226">d2</text>
+    <text x="524" y="226">d4</text><text x="600" y="226">d5</text><text x="676" y="226">d6</text>
+  </g>
+  <text x="448" y="226" class="token amber">d3</text>
+  <path d="M429 231L467 204" stroke="#aa5815" stroke-width="2"/>
+
+  <path d="M448 246V273" stroke="#aa5815" stroke-width="2" marker-end="url(#arrow-amber)"/>
+  <text x="36" y="309" class="body">After correction</text>
+  <rect x="266" y="278" width="60" height="48" rx="6" class="accepted"/>
+  <rect x="342" y="278" width="60" height="48" rx="6" class="accepted"/>
+  <rect x="418" y="278" width="60" height="48" rx="6" fill="#fff0dc" stroke="#d9a56a"/>
+  <rect x="494" y="278" width="60" height="48" rx="6" class="candidate"/>
+  <rect x="570" y="278" width="60" height="48" rx="6" class="candidate"/>
+  <rect x="646" y="278" width="60" height="48" rx="6" class="candidate"/>
+  <g class="token">
+    <text x="296" y="310" class="green">d1</text><text x="372" y="310" class="green">d2</text>
+    <text x="448" y="310" class="amber">c3</text>
+    <text x="524" y="310" class="blue">d4</text><text x="600" y="310" class="blue">d5</text><text x="676" y="310" class="blue">d6</text>
+  </g>
+  <path d="M266 336V344H478V336" fill="none" stroke="#187464" stroke-width="1.5"/>
+  <text x="372" y="368" text-anchor="middle" class="small green">Committed prefix</text>
+  <path d="M494 336V344H706V336" fill="none" stroke="#2864bd" stroke-width="1.5"/>
+  <text x="600" y="368" text-anchor="middle" class="small blue">Retained, unverified</text>
+
+  <rect x="798" y="174" width="446" height="201" rx="10" fill="#f5f7fb" stroke="#dce3ec"/>
+  <text x="820" y="211" class="heading">Reverify 4–6</text>
+  <text x="820" y="245" class="body">Condition on d1, d2, corrected c3.</text>
+  <text x="820" y="279" class="body">Keep the candidate token IDs.</text>
+  <text x="820" y="313" class="body">Recompute target KV and logits</text>
+  <text x="820" y="339" class="body">from corrected position 3.</text>
+
+  <path d="M36 397H1244" stroke="#dce3ec"/>
+  <text x="36" y="432" class="heading">B. Draft ahead while positions 1–6 are unresolved</text>
+  <text x="950" y="466" text-anchor="middle" class="small blue">Predict 7–12 in parallel</text>
+  <rect x="36" y="484" width="230" height="64" rx="8" class="accepted"/>
+  <text x="151" y="510" text-anchor="middle" class="body green">Anchors through 0</text>
+  <text x="151" y="535" text-anchor="middle" class="small green">Tokens + target features</text>
+  <rect x="296" y="484" width="344" height="64" rx="8" fill="#f5f7fb" stroke="#92a1b4" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="468" y="510" text-anchor="middle" class="body muted">Unresolved positions 1–6</text>
+  <text x="468" y="535" text-anchor="middle" class="small muted">Gap</text>
+  <rect x="670" y="484" width="80" height="64" rx="8" class="candidate"/>
+  <rect x="766" y="484" width="80" height="64" rx="8" class="candidate"/>
+  <rect x="862" y="484" width="80" height="64" rx="8" class="candidate"/>
+  <rect x="958" y="484" width="80" height="64" rx="8" class="candidate"/>
+  <rect x="1054" y="484" width="80" height="64" rx="8" class="candidate"/>
+  <rect x="1150" y="484" width="80" height="64" rx="8" class="candidate"/>
+  <g class="token blue">
+    <text x="710" y="523">7</text><text x="806" y="523">8</text>
+    <text x="902" y="523">9</text><text x="998" y="523">10</text>
+    <text x="1094" y="523">11</text><text x="1190" y="523">12</text>
+  </g>
+  <path d="M670 554V562H1230V554" fill="none" stroke="#2864bd" stroke-width="1.5"/>
+  <path d="M151 548V582H950V564" fill="none" stroke="#2864bd" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="640" y="606" text-anchor="middle" class="small blue">Condition on available anchors and positions; no sampled-token chain within the future block.</text>
+  <text x="36" y="642" class="body">Proposed training: vary the gap between the available anchors and the prediction window.</text>
+</svg>

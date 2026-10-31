@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="690" viewBox="0 0 1280 690" role="img" aria-labelledby="title desc">
+  <title id="title">Proposed overlap within one request</title>
+  <desc id="desc">Two GPUs exchange candidate tokens and verifier feedback. DFlash1 drafts positions 7 through 12 while the target verifies positions 1 through 6. After correcting position 3, the target reverifies retained candidates 4 through 6 under the corrected prefix. Drafting continues during this correction. The illustrated branch advances if the retained suffix passes. Timings are illustrative.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#2864bd"/></marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#187464"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#aa5815"/></marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#65758b"/></marker>
+    <style>
+      text { font-family: Arial, Helvetica, "DejaVu Sans", sans-serif; fill: #172a43; }
+      .title { font-size: 30px; font-weight: 700; }
+      .heading { font-size: 22px; font-weight: 700; }
+      .label { font-size: 20px; font-weight: 700; }
+      .body { font-size: 18px; }
+      .small { font-size: 17px; }
+      .muted { fill: #53647a; }
+      .blue { fill: #2256a1; }
+      .green { fill: #146153; }
+      .amber { fill: #95460e; }
+    </style>
+  </defs>
+  <rect width="1280" height="690" fill="#ffffff"/>
+  <text x="36" y="49" class="title">Overlap within one request</text>
+  <text x="36" y="80" class="body muted">Proposed DFlash1 design · one drafter GPU and one verifier GPU</text>
+
+  <!-- Worker roles and the two communication directions. -->
+  <rect x="36" y="110" width="304" height="132" rx="10" fill="#edf4ff" stroke="#9abbe9" stroke-width="1.5"/>
+  <text x="58" y="141" class="small blue">GPU 0</text>
+  <text x="58" y="176" class="heading">DFlash1 drafter</text>
+  <text x="58" y="210" class="small">Predicts a block in parallel</text>
+  <rect x="940" y="110" width="304" height="132" rx="10" fill="#edf7f3" stroke="#95c3b5" stroke-width="1.5"/>
+  <text x="962" y="141" class="small green">GPU 1</text>
+  <text x="962" y="176" class="heading">Target verifier</text>
+  <text x="962" y="210" class="small">Owns the committed prefix</text>
+  <text x="640" y="139" text-anchor="middle" class="small blue">Candidate tokens + positions</text>
+  <path d="M360 156H920" fill="none" stroke="#2864bd" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+  <text x="640" y="198" text-anchor="middle" class="small green">Accepted prefix, corrections + target features</text>
+  <path d="M920 216H360" fill="none" stroke="#187464" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+
+  <path d="M36 273H1244" stroke="#dce3ec"/>
+  <text x="36" y="310" class="heading">A possible schedule</text>
+  <text x="1244" y="310" text-anchor="end" class="small muted">Same request throughout · time not to scale</text>
+
+  <!-- The broad drafting block spans both verification passes. -->
+  <rect x="394" y="344" width="580" height="230" rx="10" fill="#f5f7fb"/>
+  <text x="36" y="391" class="label">Drafter</text>
+  <text x="36" y="416" class="small muted">GPU 0</text>
+  <text x="36" y="511" class="label">Verifier</text>
+  <text x="36" y="536" class="small muted">GPU 1</text>
+
+  <rect x="206" y="360" width="165" height="76" rx="8" fill="#deebff" stroke="#9abbe9"/>
+  <text x="288.5" y="405" text-anchor="middle" class="label blue">Draft 1–6</text>
+  <rect x="406" y="360" width="556" height="76" rx="8" fill="#deebff" stroke="#9abbe9"/>
+  <text x="684" y="391" text-anchor="middle" class="label blue">Draft 7–12 from earlier anchors</text>
+  <text x="684" y="417" text-anchor="middle" class="small blue">Continue while verification resolves 1–6</text>
+  <rect x="990" y="360" width="254" height="76" rx="8" fill="#deebff" stroke="#9abbe9"/>
+  <text x="1117" y="391" text-anchor="middle" class="label blue">Draft 13–18</text>
+  <text x="1117" y="417" text-anchor="middle" class="small blue">From latest anchors</text>
+
+  <rect x="406" y="480" width="254" height="76" rx="8" fill="#dfefe8" stroke="#95c3b5"/>
+  <text x="533" y="511" text-anchor="middle" class="label green">Verify 1–6</text>
+  <text x="533" y="537" text-anchor="middle" class="small green">Accept 1–2; reject 3</text>
+  <rect x="694" y="480" width="268" height="76" rx="8" fill="#dfefe8" stroke="#95c3b5"/>
+  <text x="828" y="511" text-anchor="middle" class="label green">Reverify 4–6</text>
+  <text x="828" y="537" text-anchor="middle" class="small green">Under corrected prefix</text>
+  <rect x="990" y="480" width="254" height="76" rx="8" fill="#dfefe8" stroke="#95c3b5"/>
+  <text x="1117" y="511" text-anchor="middle" class="label green">Verify 7–12</text>
+  <text x="1117" y="537" text-anchor="middle" class="small green">If retained 4–6 pass</text>
+
+  <path d="M371 398H386V518H403" fill="none" stroke="#2864bd" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <path d="M962 398H977V518H987" fill="none" stroke="#2864bd" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="677" y="465" text-anchor="middle" class="small amber">Correct 3</text>
+  <path d="M677 472V510" fill="none" stroke="#aa5815" stroke-width="1.5"/>
+  <path d="M661 518H691" fill="none" stroke="#aa5815" stroke-width="2.5" marker-end="url(#arrow-amber)"/>
+
+  <path d="M206 592H1244" fill="none" stroke="#65758b" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <text x="1244" y="615" text-anchor="end" class="small muted">Time</text>
+  <text x="36" y="645" class="body">After correction: keep candidate tokens; recompute target verification from position 3.</text>
+  <text x="36" y="674" class="small muted">Advance only through verified tokens. Another rejection triggers another correction.</text>
+</svg>

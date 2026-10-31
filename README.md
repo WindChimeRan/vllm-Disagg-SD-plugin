@@ -1,27 +1,36 @@
 # vllm-Disagg-SD-plugin
 
-## Project Goal
+A vLLM plugin that runs speculative drafting and verification on separate GPUs.
 
-a plug-in for vllm. 
-- Single-Node Multi-Card Disagg-SD: 1 card for speculative drafting, other cards for verification. (start with 1:1)
-- Multi-Node Disagg-SD: local DGX-Spark/vLLM-metal for drafting, cloud B300 for verification. (start with DGX-Spark + 1xB300)
-- compatible with the newest vllm
+## Goal
 
-## Main Disagg Algorithm (batching, scheduling .etc)
-- The most straightforward disagg algorithm, batch async like MineDraft https://arxiv.org/html/2603.18016v3
-- My own algorithm, which requires retraining a dflash1 in a skip-gram way ....
+- **Single node:** one GPU for drafting, others for verification. Start with 1:1.
+- **Cross node:** local DGX Spark / vLLM-metal for drafting, cloud B300 for verification. Start with Spark + one B300.
+- Stay compatible with the latest vLLM.
+- **DFlash1 only.** Other drafters may serve as benchmarks; integrations are not planned.
 
-## Main drafter
+## Approach
 
-- DFlash1 only
-- Others can be used as baseline comparison. But Disagg integrations are not planned.
+**Baseline — overlap across requests:** draft one batch while verifying another, as in [MineDraft](https://arxiv.org/html/2603.18016v3).
 
-## Main challenge
-- input / output of drafter could be very big --> communication bound
-- drafter's kv cache would be hard to manage ... H-Spec could simplify this (https://arxiv.org/pdf/2609.24197)
+**Our idea — overlap within one request:** exploit DFlash1's parallel drafting to keep useful candidates after a correction. If position 3 is wrong, correct it and reverify the existing tokens from position 4 onward, while the drafter predicts farther ahead.
 
-## Related work:
+Retrain DFlash1 with **skip-gram gaps between available anchors and drafting positions**, so drafting can continue without waiting for the full intervening prefix. Reuse candidate tokens; recompute verification under the corrected prefix.
 
-- https://arxiv.org/html/2603.18016v3
-- https://arxiv.org/pdf/2511.11733
-- https://arxiv.org/pdf/2407.11798
+[System design figures](design/README.md) · [First hypothesis test](hypothesis/suffix-reuse.md)
+
+## Main challenges
+
+- Target-feature transfer may become communication-bound.
+- Manage draft KV state and corrections while both GPUs are working.
+- Keep enough later candidates useful to justify reverification.
+
+## Related work
+
+- [MineDraft](https://arxiv.org/html/2603.18016v3), [PEARL](https://arxiv.org/abs/2408.11850), [SSD / Saguaro](https://arxiv.org/html/2603.03251) — overlapping drafting and verification.
+- [StarSD](https://arxiv.org/html/2601.21622), [SpecActor](https://arxiv.org/html/2511.16193) — separate draft and verifier services.
+- [SpecEdge](https://arxiv.org/html/2505.17052) — edge/cloud speculation.
+- [ReTrace](https://arxiv.org/abs/2608.29748), [ReAnchor](https://arxiv.org/html/2610.26531), [Rejoin](https://github.com/cadelew/Rejoin-Speculative-Decoding) — reuse after rejection.
+- [H-Spec](https://arxiv.org/abs/2609.24197) — drafter KV-cache design.
+
+[Full literature review, code links, and vLLM issues/PRs](docs/related-work.md).
