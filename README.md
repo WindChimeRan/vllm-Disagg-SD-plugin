@@ -17,7 +17,7 @@ A vLLM plugin that runs speculative drafting and verification on separate GPUs.
 
 Retrain DFlash1 with **skip-gram gaps between available anchors and drafting positions**, so drafting can continue without waiting for the full intervening prefix. Reuse candidate tokens; recompute verification under the corrected prefix.
 
-[System design figures](design/README.md) · [First hypothesis test](hypothesis/suffix-reuse.md)
+[MineDraft design](design/MineDraft.md) · [Our method](design/OurMethod.md) · [First hypothesis test](hypothesis/suffix-reuse.md)
 
 ## Main challenges
 

@@ -14,4 +14,4 @@ as listed on the paper's arXiv page. Retrieved October 31, 2026.
 | [figure-2.svg](figure-2.svg) | [MineDraft.svg](https://arxiv.org/html/2603.18016v3/MineDraft.svg) |
 
 The SVG files are byte-for-byte copies, renamed locally. The short explanations
-in the design page are ours; the figures have not been edited.
+in the [MineDraft design note](../../MineDraft.md) are ours; the figures have not been edited.
