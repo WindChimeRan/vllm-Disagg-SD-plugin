@@ -36,5 +36,9 @@ EAL was similar—**6.41 versus 6.49**—while the chance of retaining at least 
 useful suffix token after a correction was **35.5% versus 17.0%**. Mean reused
 tokens per correction were **0.98 versus 0.65**.
 
-This supports testing suffix reuse during overlap. Gap training and asynchronous
-execution remain untested. [Full experiment report](../hypothesis/suffix-reuse.md).
+This supports testing suffix reuse during overlap.
+[Full experiment report](../hypothesis/suffix-reuse.md).
+
+The runtime now supports continuous batching with both policies. Gap training
+remains future work; [runtime measurements and oracle replay](../hypothesis/runtime-refresh.md)
+measure the current checkpoint and estimate the proposal quality needed for speedup.

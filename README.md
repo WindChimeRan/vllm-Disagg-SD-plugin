@@ -19,6 +19,14 @@ Retrain DFlash1 with **skip-gram gaps between available anchors and drafting pos
 
 [MineDraft design](design/MineDraft.md) · [Our method](design/OurMethod.md) · [First hypothesis test](hypothesis/suffix-reuse.md)
 
+## Runtime
+
+The prototype provides both policies through one out-of-tree plugin, using native
+vLLM verification and a separate batched DFlash1 worker.
+[Architecture, supported scope, and running instructions](docs/runtime.md).
+[Latest benchmark and drafter training targets](hypothesis/runtime-refresh.md).
+[MineDraft reproduction audit](hypothesis/minedraft-reproduction.md).
+
 ## Main challenges
 
 - Target-feature transfer may become communication-bound.

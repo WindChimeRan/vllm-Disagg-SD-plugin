@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vllm-disagg-sd"
+version = "0.1.0"
+description = "Batched speculative decoding across dedicated target and draft GPUs"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+runtime = [
+    "dflash @ git+https://github.com/z-lab/dflash.git@07ebd93db9f472af339b644bb70221ad8428328a",
+]
+test = ["pytest>=8", "ruff>=0.12"]
+
+[project.entry-points."vllm.general_plugins"]
+disagg_sd = "disagg_sd:register"
+
+[tool.setuptools.packages.find]
+include = ["disagg_sd*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

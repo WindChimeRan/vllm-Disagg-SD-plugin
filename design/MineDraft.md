@@ -10,7 +10,9 @@ The core design is asynchronous execution across batches: the target and drafter
 work on different batches rather than taking turns on the same batch. This means
 a smaller effective request batch at the target, with the potential for better
 latency and throughput by committing multiple tokens per request in each
-verification pass.
+verification pass. This smaller batch applies at fixed total concurrency.
+MineDraft's implementation admits up to 2m requests to keep m requests in each
+cohort; a saturated system need not halve the verifier batch.
 
 ![MineDraft Figure 1: standard and overlapped speculative decoding pipelines.](vendor/minedraft/figure-1.svg)
 
@@ -26,3 +28,5 @@ between workers.
 Both figures are reproduced unchanged from [Tang et al., MineDraft, v3](https://arxiv.org/html/2603.18016v3),
 under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 [Original assets and attribution](vendor/minedraft/SOURCE.md).
+
+[Source audit and implementation checks](../hypothesis/minedraft-reproduction.md).
